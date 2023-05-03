@@ -1,9 +1,8 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Конный блог | Обо мне</title>
+    <title>Профиль</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -15,6 +14,11 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Конный блог</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Переключатель навигации">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -39,32 +43,48 @@
                         </li>
                     </ul>
                 </div>
+                <div class="navbar-left navbar">
+                    <form action="{% url 'search_results' %} " method="get">
+                        <div class="form-group">
+                            <label>
+                                <input name="q" type="text" placeholder="Найти пост...">
+                            </label>
+                        </div>
+                    </form>
+                </div>
             </div>
         </nav>
     </header>
-    {% block content %}
-        <div style="margin-top: 1%">
-            <div class="container-fluid vh-50">
-                <div class="row align-items-start">
-                    <div class="col">
-                        <div class="bg-image card shadow-1-strong"
-                             style="background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(106,68,76,1) 100%);">
-                            <div class="card-body text-white">
-                                <h2>Этот блог был создан, дабы показать людям, насколько прекрасны кони.</h2>
-                                <img src="https://static.life.ru/publications/2021/4/27/801149074417.0017-1200x.jpeg" alt="img.png" width="75%" height="75%">
-                                <h6>Работа Дидаева, Белоконева и Комекова. </h6>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{% block content %}
+<div class="container mt-5 vh-100">
+<a href="{% url 'home' %}" class="btn btn-primary"> "<<"Go Back</a>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h1>Профиль</h1>
         </div>
-    {% endblock content %}
+        <div class="card-body">
+          <h2>Username: {{ user.username }}</h2>
+          <h5>Email: {{ user.email }}</h5>
+        <h5>Последний вход: {{ user.last_login }}</h5>
 
-    <!--suppress JSUnresolvedLibraryURL -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-            crossorigin="anonymous"></script>
+          <h3>Посты</h3>
+          <ul class="list-group">
+            {% for post in posts %}
+              <a href="{% url 'post_detail' post.pk %}">{{ post.title }}
+            {% empty %}
+              <li class="list-group-item">No posts found</li>
+            {% endfor %}
+          </ul>
+
+          <!-- Add any other data you want to display here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+</div>
 </body>
 </html>
